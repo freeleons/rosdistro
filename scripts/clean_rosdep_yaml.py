@@ -46,7 +46,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     with open(args.infile) as f:
-        iny = yaml.load(f.read())
+        iny = yaml.load(f.read(), Loader=yaml.SafeLoader)
 
     buf = ''
     for a in sorted(iny):

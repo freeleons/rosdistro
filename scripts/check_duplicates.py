@@ -45,7 +45,7 @@ def create_default_sources():
     filepath = os.path.join(basedir, 'index.yaml')
     with open(filepath) as f:
         content = f.read()
-    index = yaml.load(content)
+    index = yaml.load(content, Loader=yaml.SafeLoader)
     for distro in index['distributions']:
         distfile = 'file://' + basedir + '/' + distro + '/distribution.yaml'
         print('loading %s' % distfile)
@@ -58,7 +58,7 @@ def create_default_sources():
         filepath = os.path.join(basedir, 'rosdep', filename)
         with open(filepath) as f:
             content = f.read()
-        rosdep_data = yaml.load(content)
+        rosdep_data = yaml.load(content, Loader=yaml.SafeLoader)
         tag = 'osx' if 'osx-' in filepath else ''
         sources.append(CachedDataSource('yaml', 'file://' + filepath, [tag], rosdep_data))
     return sources
@@ -113,7 +113,7 @@ def main(infile):
         filepath = os.path.join(os.getcwd(), filename)
         with open(filepath) as f:
             content = f.read()
-        rosdep_data = yaml.load(content)
+        rosdep_data = yaml.load(content, Loader=yaml.SafeLoader)
         # osx-homebrow uses xos tag
         tag = 'osx' if 'osx-' in filepath else ''
         model = CachedDataSource('yaml', 'file://' + filepath, [tag], rosdep_data)

@@ -8,7 +8,7 @@ import yaml
 
 
 def convert_yaml_to_rosinstall(yaml_file, rosinstall_file):
-    data = yaml.load(open(yaml_file, 'r'))
+    data = yaml.load(open(yaml_file, 'r'), Loader=yaml.SafeLoader)
     data = convert_yaml_data_to_rosinstall_data(data)
     yaml.dump(data, file(rosinstall_file, 'w'), default_flow_style=False)
 
