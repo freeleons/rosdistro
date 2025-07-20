@@ -9,7 +9,7 @@ from sort_yaml import sort_yaml_data
 
 
 def add_devel_repository(yaml_file, name, vcs_type, url, version=None):
-    data = yaml.load(open(yaml_file, 'r'))
+    data = yaml.load(open(yaml_file, 'r'), Loader=yaml.SafeLoader)
     if data['type'] == 'gbp':
         add_devel_repository_fuerte(yaml_file, data, name, vcs_type, url, version)
         return
