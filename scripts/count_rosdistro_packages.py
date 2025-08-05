@@ -40,11 +40,11 @@ OUTPUT_FILE = args.output_file
 
 
 def get_all_commits(repo_dir, first_hash):
-    return subprocess.check_output('git -C %s rev-list --reverse %s..master' % (repo_dir, first_hash), shell=True).decode("utf-8").splitlines()
+    return subprocess.check_output('git -C %s rev-list --reverse %s..master' % (repo_dir, first_hash), shell=False).decode("utf-8").splitlines()
 
 
 def get_commit_date(repo_dir, commit):
-    date_str = subprocess.check_output('git -C %s show -s --format=%%ci %s' % (repo_dir, commit), shell=True).decode("utf-8").strip()
+    date_str = subprocess.check_output('git -C %s show -s --format=%%ci %s' % (repo_dir, commit), shell=False).decode("utf-8").strip()
     return date_str
 
 
@@ -83,9 +83,9 @@ else:
 
 try:
     if os.path.exists(os.path.join(repo_location, '.git')):
-        subprocess.check_call('git -C %s fetch' % repo_location, shell=True)
+        subprocess.check_call('git -C %s fetch' % repo_location, shell=False)
     else:
-        subprocess.check_call('git clone https://github.com/ros/rosdistro.git %s' % repo_location, shell=True)
+        subprocess.check_call('git clone https://github.com/ros/rosdistro.git %s' % repo_location, shell=False)
         print("Cloned to %s" % repo_location)
 
     commits = get_all_commits(repo_location, FIRST_HASH)
@@ -94,8 +94,8 @@ try:
 
     csv_strings = []
     for commit in monthly_commits(repo_location, commits):
-        subprocess.check_call('git -C %s clean -fxd' % repo_location, shell=True)
-        subprocess.check_call('git -C %s checkout --quiet %s' % (repo_location, commit), shell=True)
+        subprocess.check_call('git -C %s clean -fxd' % repo_location, shell=False)
+        subprocess.check_call('git -C %s checkout --quiet %s' % (repo_location, commit), shell=False)
         commit_date = get_commit_date(repo_location, commit)
         counts = get_rosdistro_counts('file://%s/index.yaml' % repo_location)
         csv_strings.append(", ".join([commit_date] + [str(c) for c in counts]))
